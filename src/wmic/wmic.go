@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os/exec"
 	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -28,18 +29,24 @@ func Exec(args ...string) ([]Output, error) {
 }
 
 func Translate(reader io.Reader) ([]Output, error) {
-	outputString, err := ReadUTF16LE(reader)
+	var bs []byte
+	var err error
+	if runtime.GOOS == "windows" {
+		bs, err = ioutil.ReadAll(reader)
+	} else {
+		bs, err = ReadUTF16LE(reader)
+	}
 	if err != nil {
 		return nil, err
 	}
-	return Parse(outputString)
+	return Parse(string(bs))
 }
 
-func ReadUTF16LE(reader io.Reader) (string, error) {
+func ReadUTF16LE(reader io.Reader) ([]byte, error) {
 	utf16 := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
 	utf16reader := transform.NewReader(reader, utf16.NewDecoder())
 	bytes, err := ioutil.ReadAll(utf16reader)
-	return string(bytes), err
+	return bytes, err
 }
 
 var newlineRegex = regexp.MustCompile(`\r\n`)

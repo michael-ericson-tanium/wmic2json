@@ -29,6 +29,8 @@ C:\>wmic2json logon
 ]
 ```
 
+You can also `wmic logon | wmic2json`.
+
 
 ## Hacking
 
