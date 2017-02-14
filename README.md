@@ -31,6 +31,10 @@ C:\>wmic2json logon
 
 You can also `wmic logon | wmic2json`.
 
+## Recent Builds
+
+1. Version 0.0
+    1. Windows 64: [wmic2json-0.0.zip](https://tanium.box.com/s/irk164nxqizl88i3fmq3rzxenoyqrruq)
 
 ## Hacking
 
